@@ -13,13 +13,17 @@ local verifiedTargets = {
     ["vboperator"] = true,
     ["operatorhalt"] = true,
 
-    -- Voidbreaker Group (Added from your logs!)
+    -- Voidbreaker Group
     ["voidbreaker"] = true,
     ["voidbreaker_ai"] = true,
 
-    -- Scrapmaw Group (Added from your logs!)
+    -- Scrapmaw Group
     ["scrapmaw"] = true,
-    ["scrapmaw_ai"] = true
+    ["scrapmaw_ai"] = true,
+
+    -- Voidbound ICBM Group (Newly Added!)
+    ["voidboundicbm"] = true,
+    ["voidboundicm_clientai"] = true
 }
 
 -- Target evaluation function
@@ -27,8 +31,8 @@ local function cleanTarget(instance)
     if instance then
         local lowerName = string.lower(instance.Name)
         
-        -- Instantly remove if it matches any verified log entry
-        if verifiedTargets[lowerName] then
+        -- Instantly remove if it matches any verified log entry or contains the keyword
+        if verifiedTargets[lowerName] or string.find(lowerName, "voidboundicbm") or string.find(lowerName, "voidboundicm") then
             print("[Matrix Cleaner] Erased verified target: " .. tostring(instance.Name))
             instance:Destroy()
         end
@@ -45,8 +49,7 @@ workspace.DescendantAdded:Connect(cleanTarget)
 
 -- Standard system confirmation popup
 game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "All Log Entries Applied",
-    Text = "Monitoring actively for Kolona, Operator, Voidbreaker, and Scrapmaw.",
+    Title = "ICBM Logs Applied",
+    Text = "Monitoring actively for all core entities and Voidbound ICBM components.",
     Duration = 5
 })
-
